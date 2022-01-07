@@ -1,0 +1,57 @@
+<head>
+    <meta charset="UTF-8">
+    <title>AI-SCC</title>
+    <link rel="stylesheet" href="../static/styles.css">
+
+</head>
+<body>
+<a class="headline">SCC Classification by Nadav Noy</a>
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+    <div class="search-container">
+        <form action="/search">
+            <input type="text" placeholder="Search by patient id or image id" name="search">
+            <button type="submit"><i class="fa fa-search">Submit</i></button>
+        </form>
+    </div>
+</div>
+</body>
+
+<div class="container">
+    {% if data|length > 0 %}
+    <div class="row ng-scope">
+
+        <div class="col-md-9 col-md-pull-3">
+            {% for item in data %}
+            <section class="search-result-item">
+                <a class="image-link" href="#"><img class="image"
+                                                    src="../data/{{item.image_path}}">
+                </a>
+                <div class="search-result-item-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4 class="search-result-item-heading"><a href="/analyze/{{item.id}}">{{item.id}}</a></h4>
+                            <p class="info">Name: {{item.patient_name}}<br>
+                                Age: {{item.patient_age}}<br>
+                                Gender: {{item.sex}}<br>
+                                Patient id: {{item.patient_id}}</p>
+                            <p class="description">{{item.description}}</p>
+                        </div>
+                        <div class="col-sm-3 text-align-center">
+                            <p class="value3 mt-sm">Prognosis: {{'%0.2f'| format(item.prognosis|float)}}% likely to be SCC</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+
+    {% if data|length == 0 %}
+    <p class="no_res">No results found!</p>
+    {% endif %}
+
+</div>

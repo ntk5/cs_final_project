@@ -1,0 +1,46 @@
+services:
+  web:
+    build: .
+    ports:
+    - "5000:5000"
+    volumes:
+    - .:/code
+    - logvolume01:/var/log
+    - datastore:/app/data
+    networks:
+    - backend
+    environment:
+      MONGODB_HOSTNAME: mongodb
+      MONGODB_DATABASE: skin_lesion_patients
+      INFERENCE_NAME: infernce_service
+    image: run
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+    - "27017:27017"
+    volumes:
+    - shared_database:/data/db
+    networks:
+    - backend
+  inference:
+    image: tensorflow/serving
+    container_name: infernce_service
+    ports:
+    - "8501:8501"
+    environment:
+    - MODEL_NAME=my_model
+    - MODEL_BASE_PATH=/models
+    - TF_CPP_MIN_VLOG_LEVEL=1
+    networks:
+    - backend
+    volumes:
+    - C:\Users\nadav\Documents\unevrsity\שנה ה\פרוייקט\playground\backend\new_model_data:/models/my_model/1
+volumes:
+  logvolume01: {}
+  shared_database: {}
+  datastore: {}
+
+networks:
+  backend:
+    driver: bridge

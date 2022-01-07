@@ -1,0 +1,44 @@
+<head>
+    <meta charset="UTF-8">
+    <title>AI-SCC</title>
+    <link rel="stylesheet" href="static/styles.css">
+
+</head>
+<body>
+<a class="headline">SCC Classification by Nadav Noy</a>
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+    <div class="search-container">
+        <form action="/search">
+            <input type="text" placeholder="Search by patient id or image id" name="search">
+            <button type="submit"><i class="fa fa-search">Submit</i></button>
+        </form>
+    </div>
+</div>
+<br>
+<div class="upload_form">
+    <form class="upload_form" method=post enctype=multipart/form-data>
+        Patient Name:
+        <input type=text name="patient_name">
+        Gender:
+        <select name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Unknown">Unknown</option>
+        </select>
+        <br>
+        Age:
+        <input type=text name="patient_age">
+
+        Patient ID:
+        <input type=text name="patient_id">
+
+        Description:
+        <input type=text name="patient_description">
+
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </form>
+</div>
+</body>
