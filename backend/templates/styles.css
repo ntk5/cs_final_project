@@ -159,6 +159,14 @@ li a:hover {
   border: none;
 }
 
+.topnav input[type=number] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+
 .topnav .search-container {
   float: right;
 }
@@ -183,6 +191,16 @@ li a:hover {
 }
 
 .upload_form input[type=text]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.upload_form input[type=number]{
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
