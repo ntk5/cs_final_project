@@ -4,11 +4,11 @@
 # for getting images from path
 import tensorflow as tf
 
-from model_creator.config import SHOULD_VERIFY_DEVICES
-from model_creator.model_creating import train_base_model, evaluate_model, train_clean_model
-from model_creator.pre_processing import create_image_generator, create_dataframe, augment_images, \
+from config import SHOULD_VERIFY_DEVICES
+from model_creating import train_base_model, evaluate_model, train_clean_model
+from pre_processing import create_image_generator, create_dataframe, augment_images, \
     create_train_test_datagen, create_labels
-from model_creator.visualization import show_batch, plot_metrics, visualize_model_training
+from visualization import show_batch, plot_metrics, visualize_model_training
 
 
 # working with keras

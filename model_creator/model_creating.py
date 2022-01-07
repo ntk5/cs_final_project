@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.python.keras.applications.resnet import ResNet50
 
-from model_creator.config import IMG_WIDTH, IMG_HEIGHT, METRICS
+from config import IMG_WIDTH, IMG_HEIGHT, METRICS
 
 
 def train_clean_model(base_data_gen, target_data_gen):
