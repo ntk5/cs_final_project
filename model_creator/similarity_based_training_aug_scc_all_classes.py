@@ -39,13 +39,14 @@ def main():
     show_batch(scc_train_data_gen)
     # resnet50 without top with weights pre-trained on imagenet
     pretrained_base_model, base_model_history = train_base_model(scc_train_data_gen)
-    evaluate_model(pretrained_base_model, scc_test_data_gen)
+    predicted_res = evaluate_model(pretrained_base_model, scc_test_data_gen)
+    plot_metrics(base_model_history, scc_test_data_gen.classes, predicted_res, is_base=True)
     # summarize history for accuracy
-    visualize_model_training(base_model_history)
+    visualize_model_training(base_model_history, is_base=True)
     new_model, history = train_clean_model(train_data_gen, scc_train_data_gen)
-    evaluate_model(new_model, scc_test_data_gen)
+    predicted_res = evaluate_model(new_model, scc_test_data_gen)
     visualize_model_training(history)
-    plot_metrics(history)
+    plot_metrics(history, scc_test_data_gen.classes, predicted_res)
 
 
 if __name__ == '__main__':
