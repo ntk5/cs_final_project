@@ -1,19 +1,22 @@
+import json
 import os
 import uuid
-import json
 
+import requests
+import tensorflow as tf
+from PIL import Image
 from flask import Flask, send_from_directory, request, render_template, redirect, send_file
 from flask_pymongo import PyMongo
-import requests
-from PIL import Image
-from numpy import asarray
-import tensorflow as tf
 
 from utils import allowed_file
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'data'
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, UPLOAD_FOLDER)
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.mkdir(app.config['UPLOAD_FOLDER'])
+
 app.config["MONGO_URI"] = 'mongodb://' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
 
 mongo = PyMongo(app)
