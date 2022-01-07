@@ -1,6 +1,7 @@
-Aim 
-Introducing a novel method to improve the performance of rare medical conditions image classification using similarity-based transfer learning and data augmentation.
-In academic literacy, there is a wide survey over the problems of using AI to solve medical field tasks. Two of the greatest problems are:
+Aim
+<br>
+Introducing a novel method to improve the performance of rare medical conditions image classification using similarity-based transfer learning and data augmentation.<br>
+In academic literacy, there is a wide survey over the problems of using AI to solve medical field tasks. Two of the greatest problems are:<br>
 1)	Lack of data – the process of getting the private patient’s data and having it labeled is slow and expensive. 
 2)	Imbalanced data – due to the major difference between pathological and non-pathological cases, the data is extremely imbalanced which causes mis-accuracy in ML and DL algorithms.
 One of the most popular ways to handle the lack of data is to perform transfer learning. [1] Nevertheless, this method does not always perform well in the medical field. This work will show how transferring from a base model which was trained over a small yet similar dataset, would achieve a higher accuracy than transferring from a base model which was trained over a  robust natural images datasets e.g. ImageNet.
