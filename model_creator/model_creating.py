@@ -39,6 +39,9 @@ def train_clean_model(base_data_gen, target_data_gen):
     new_model.summary()
     steps_per_epoch = target_data_gen.n // target_data_gen.batch_size
     history = new_model.fit(x=target_data_gen, steps_per_epoch=steps_per_epoch, epochs=30)
+
+    save_model(new_model, 'new_model')
+
     return new_model, history
 
 

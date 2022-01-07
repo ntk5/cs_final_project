@@ -1,4 +1,4 @@
-import keras
+from tensorflow import keras
 
 BATCH_SIZE = 32
 IMG_HEIGHT = 224
