@@ -1,10 +1,9 @@
 import os
 
-import cv2
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from skimage.transform import rotate
+from PIL import Image
 from tqdm import tqdm
 
 from config import LABELS_PATH, DATA_DIR, IMG_HEIGHT, IMG_WIDTH
@@ -31,17 +30,19 @@ def augment_images(df):
     files_added = []
     print("Starting image augmentation:")
     for item in tqdm(df.query('SCC == "1"').image):
-        img = cv2.imread(os.path.join(DATA_DIR, item))
-        hflipped_image = np.fliplr(img)
-        vflipped_image = np.flipud(img)
-        r_image = rotate(img, angle=45, preserve_range=True)
-        flipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_1.jpg')
-        vflipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_2.jpg')
-        rotated_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_3.jpg')
-        cv2.imwrite(flipped_name, hflipped_image)
-        cv2.imwrite(vflipped_name, vflipped_image)
-        cv2.imwrite(rotated_name, r_image)
-        files_added += [flipped_name, vflipped_name, rotated_name]
+        with Image.open(os.path.join(DATA_DIR, item)) as curr_img:
+            img = np.array(curr_img)
+            hflipped_image = Image.fromarray(np.fliplr(img))
+            vflipped_image = Image.fromarray(np.flipud(img))
+            r_image = Image.fromarray(np.flipud(img))
+            r_image = r_image.rotate(45)
+            flipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_1.jpg')
+            vflipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_2.jpg')
+            rotated_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_3.jpg')
+            hflipped_image.save(flipped_name)
+            vflipped_image.save(vflipped_name)
+            r_image.save(rotated_name)
+            files_added += [flipped_name, vflipped_name, rotated_name]
     return files_added
 
 
