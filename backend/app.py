@@ -14,10 +14,20 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'data'
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, UPLOAD_FOLDER)
 
+try:
+    if os.environ['IS_RUN_FROM_CONTAINER'] == 'yes':
+        app.logger.debug("Running from docker")
+        app.config["MONGO_URI"] = 'mongodb://' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ[
+            'MONGODB_DATABASE']
+        app.config['INFERENCE_SERVICE'] = os.environ['INFERENCE_NAME']
+
+except KeyError:
+    app.logger.debug("Running from localhost")
+    app.config["MONGO_URI"] = 'mongodb://localhost:27017/skin_lesion_patients'
+    app.config['INFERENCE_SERVICE'] = 'localhost'
+
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.mkdir(app.config['UPLOAD_FOLDER'])
-
-app.config["MONGO_URI"] = 'mongodb://' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
 
 mongo = PyMongo(app)
 db = mongo.db
@@ -26,7 +36,7 @@ db = mongo.db
 @app.route('/')
 def index():
     data = []
-    res = db.skin_lesion_db.find().limit(10)
+    res = db.skin_lesion_db.find()
     for item in res:
         data.append(dict(item))
     return render_template('index.html', data=data)
@@ -36,6 +46,22 @@ def index():
 def get_favicon():
     return send_from_directory(os.path.join(app.root_path, 'templates'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.route('/analyze', methods=['POST'])
+def analyze_image():
+    request_fields = dict(request.form)
+    file_storage_full_path = os.path.join(app.config['UPLOAD_FOLDER'], request_fields["image_path"])
+
+    image = Image.open(file_storage_full_path)
+    image = image.resize((224, 224))
+    image = tf.keras.preprocessing.image.img_to_array(image).reshape(1, 224, 224, 3).astype('float32') / 255.0
+    data = json.dumps({"signature_name": "serving_default", "instances": image.tolist()})
+    r = requests.post(f"http://{app.config['INFERENCE_SERVICE']}:8501/v1/models/my_model:predict", data=data)
+
+    response = float(dict(json.loads(r.content))['predictions'][0][0]) * 100
+    request_fields["prognosis"] = response
+    return str(response)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -67,14 +93,6 @@ def handle_image(file):
     file_storage_full_path = os.path.join(app.config['UPLOAD_FOLDER'], file_path)
     file.save(file_storage_full_path)
 
-    image = Image.open(file_storage_full_path)
-    image = image.resize((224, 224))
-    image = tf.keras.preprocessing.image.img_to_array(image).reshape(1, 224, 224, 3).astype('float32') / 255.0
-    data = json.dumps({"signature_name": "serving_default", "instances": image.tolist()})
-    r = requests.post(f"http://{os.environ['INFERENCE_NAME']}:8501/v1/models/my_model:predict", data=data)
-
-    response = float(dict(json.loads(r.content))['predictions'][0][0]) * 100
-    request_fields["prognosis"] = response
     db.skin_lesion_db.insert_one(request_fields)
     return image_id
 

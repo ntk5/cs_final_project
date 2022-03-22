@@ -2,6 +2,27 @@ import matplotlib
 from matplotlib import pyplot as plt
 from sklearn.metrics import roc_curve, auc
 
+from model_creator.pre_processing import create_dataframe
+
+
+def show_classes_histogram():
+    df = create_dataframe()
+    for i in df.columns:
+        if i != 'image':
+            df[i] = df[i].astype(int)
+    del df['image']
+    del df['UNK']
+
+    s = df.sum()
+
+    s.plot.pie(y=df.index,
+               explode=(0, 0, 0, 0, 0, 0, 0, 0.15),  # exploding 'SCC'
+               autopct='%1.1f%%')
+
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.show()
+
 
 def show_batch(data_gen):
     image_batch, label_batch = next(data_gen)
@@ -38,7 +59,7 @@ def plot_metrics(history, ground_truth, predicted_res, is_base=False):
         else:
             plt.savefig(f'{metric}.png')
 
-    fpr_keras, tpr_keras, thresholds_keras = roc_curve(ground_truth.classes[:9], predicted_res)
+    fpr_keras, tpr_keras, thresholds_keras = roc_curve(ground_truth, predicted_res)
     auc_keras = auc(fpr_keras, tpr_keras)
     plt.figure(1)
     plt.plot([0, 1], [0, 1], 'k--')

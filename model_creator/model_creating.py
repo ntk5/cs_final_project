@@ -78,7 +78,7 @@ def evaluate_model(model_to_evaluate, data_gen):
 
     benchmark_model_start_time = time.time()
 
-    res = model_to_evaluate.evaluate(x=data_gen, steps=steps_per_epoch, verbose=2)
+    res = model_to_evaluate.evaluate(x=data_gen, verbose=2)
 
     benchmark_model_end_time = time.time()
 

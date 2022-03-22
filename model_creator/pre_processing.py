@@ -6,7 +6,7 @@ import tensorflow as tf
 from PIL import Image
 from tqdm import tqdm
 
-from config import LABELS_PATH, DATA_DIR, IMG_HEIGHT, IMG_WIDTH
+from model_creator.config import LABELS_PATH, DATA_DIR, IMG_HEIGHT, IMG_WIDTH
 
 
 def create_image_generator():
@@ -32,16 +32,21 @@ def augment_images(df):
     for item in tqdm(df.query('SCC == "1"').image):
         with Image.open(os.path.join(DATA_DIR, item)) as curr_img:
             img = np.array(curr_img)
-            hflipped_image = Image.fromarray(np.fliplr(img))
-            vflipped_image = Image.fromarray(np.flipud(img))
-            r_image = Image.fromarray(np.flipud(img))
-            r_image = r_image.rotate(45)
+            # Apply Image Flipping horizontally and vertically
+            horizontally_flipped_image = Image.fromarray(np.fliplr(img))
+            veritcally_flipped_image = Image.fromarray(np.flipud(img))
+            # Apply Image Rotation by 90 and 270 degrees around the image center.
+            rotated_image = Image.fromarray(np.flipud(img))
+            rotated_image = rotated_image.rotate(45)
+
+            # Rename and save the new images
             flipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_1.jpg')
             vflipped_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_2.jpg')
             rotated_name = os.path.join(DATA_DIR, os.path.splitext(item)[0] + '_aug_s_3.jpg')
-            hflipped_image.save(flipped_name)
-            vflipped_image.save(vflipped_name)
-            r_image.save(rotated_name)
+            horizontally_flipped_image.save(flipped_name)
+            veritcally_flipped_image.save(vflipped_name)
+            rotated_image.save(rotated_name)
+
             files_added += [flipped_name, vflipped_name, rotated_name]
     return files_added
 

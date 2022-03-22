@@ -10,6 +10,7 @@ services:
     networks:
     - backend
     environment:
+      IS_RUN_FROM_CONTAINER: "yes"
       MONGODB_HOSTNAME: mongodb
       MONGODB_DATABASE: skin_lesion_patients
       INFERENCE_NAME: infernce_service

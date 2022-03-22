@@ -2,7 +2,8 @@
     <meta charset="UTF-8">
     <title>AI-SCC</title>
     <link rel="stylesheet" href="../static/styles.css">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/analyze_script.js"></script>
 </head>
 <body>
 <a class="headline">SCC Classification by Nadav Noy</a>
@@ -10,7 +11,7 @@
     <a href="/">Home</a>
     <a href="/upload">Upload</a>
     <div class="search-container">
-        <form action="/search">
+        <form id="search" action="/search">
             <input type="text" placeholder="Search by patient id or image id" name="search">
             <button type="submit"><i class="fa fa-search">Submit</i></button>
         </form>
@@ -25,24 +26,45 @@
         <div class="col-md-9 col-md-pull-3">
             {% for item in data %}
             <section class="search-result-item">
-                <a class="image-link" href="#"><img class="image"
-                                                    src="../data/{{item.image_path}}">
-                </a>
-                <div class="search-result-item-body">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h4 class="search-result-item-heading"><a href="/analyze/{{item.id}}">{{item.id}}</a></h4>
-                            <p class="info">Name: {{item.patient_name}}<br>
-                                Age: {{item.patient_age}}<br>
-                                Gender: {{item.sex}}<br>
-                                Patient id: {{item.patient_id}}</p>
-                            <p class="description">{{item.description}}</p>
+                <form id="analyzeForm">
+                    <a class="image-link" href="#">
+                        <!-- Trigger the Modal -->
+                        <img id="myImg" src="../data/{{item.image_path}}"
+                             style="width:100%;max-width:300px">
+
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+
+                            <!-- The Close Button -->
+                            <span class="close">&times;</span>
+
+                            <!-- Modal Content (The Image) -->
+                            <img class="modal-content" id="img01">
+
+                            <!-- Modal Caption (Image Text) -->
+                            <div id="caption"></div>
                         </div>
-                        <div class="col-sm-3 text-align-center">
-                            <p class="value3 mt-sm">Prognosis: {{'%0.2f'| format(item.prognosis|float)}}% likely to be SCC</p>
+
+                    </a>
+                    <div class="search-result-item-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <h4 class="search-result-item-heading"><a href="/analyze/{{item.id}}">{{item.id}}</a>
+                                </h4>
+                                <p class="info">Name: {{item.patient_name}}<br>
+                                    Age: {{item.patient_age}}<br>
+                                    Gender: {{item.sex}}<br>
+                                    Patient id: {{item.patient_id}}</p>
+                                <p class="description">{{item.description}}</p>
+                            </div>
+                            <input type="text" id="image_path" value="{{item.image_path}}" hidden>
+                            <input type="submit" value="Analyze">
+                            <div class="col-sm-3 text-align-center" id="result">
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                </form>
             </section>
             {% endfor %}
 
