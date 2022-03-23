@@ -11,7 +11,7 @@ $(document).ready(function () {
       dataType: "json",
       encode: true,
     }).done(function (data) {
-      $('#result').html(`<p class="value3 mt-sm">Prognosis ${data} likely to be SCC</p>`);
+      $('#result').html(`<p class="value3 mt-sm">Prognosis: ${data} likely to be SCC</p>`);
     });
 
     event.preventDefault();

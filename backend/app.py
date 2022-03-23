@@ -23,7 +23,7 @@ try:
 
 except KeyError:
     app.logger.debug("Running from localhost")
-    app.config["MONGO_URI"] = 'mongodb://localhost:27017/skin_lesion_patients'
+    app.config["MONGO_URI"] = 'mongodb://localhost:27017/db'
     app.config['INFERENCE_SERVICE'] = 'localhost'
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
