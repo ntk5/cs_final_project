@@ -6,7 +6,7 @@ import tensorflow as tf
 from PIL import Image
 from tqdm import tqdm
 
-from model_creator.config import LABELS_PATH, DATA_DIR, IMG_HEIGHT, IMG_WIDTH
+from config import LABELS_PATH, DATA_DIR, IMG_HEIGHT, IMG_WIDTH
 
 
 def create_image_generator():

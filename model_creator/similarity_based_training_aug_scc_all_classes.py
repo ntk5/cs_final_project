@@ -38,7 +38,7 @@ def main():
     train_data_gen, scc_train_data_gen, scc_test_data_gen = create_train_test_datagen(extended_df, image_generator)
     show_batch(scc_train_data_gen)
     # resnet50 without top with weights pre-trained on imagenet
-    pretrained_base_model, base_model_history = train_base_model(scc_train_data_gen)
+    pretrained_base_model, base_model_history = train_base_model(scc_train_data_gen, scc_test_data_gen)
     predicted_res = evaluate_model(pretrained_base_model, scc_test_data_gen)
     plot_metrics(base_model_history, scc_test_data_gen.classes, predicted_res, is_base=True)
     # summarize history for accuracy

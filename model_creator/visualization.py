@@ -2,7 +2,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 from sklearn.metrics import roc_curve, auc
 
-from model_creator.pre_processing import create_dataframe
+from pre_processing import create_dataframe
 
 
 def show_classes_histogram():
