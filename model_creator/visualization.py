@@ -1,6 +1,5 @@
 import matplotlib
 from matplotlib import pyplot as plt
-from sklearn.metrics import roc_curve, auc
 
 from pre_processing import create_dataframe
 
@@ -38,40 +37,51 @@ def show_batch(data_gen):
 
 
 def plot_metrics(history, ground_truth, predicted_res, is_base=False):
+    plt.clf()
     matplotlib.rcParams['figure.figsize'] = (12, 10)
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-    metrics = ['loss', 'precision', 'recall']
-    for n, metric in enumerate(metrics):
-        name = metric.replace("_", " ").capitalize()
-        plt.subplot(2, 2, n + 1)
-        plt.plot(history.epoch, history.history[metric], color=colors[0], label='Train')
-        plt.xlabel('Epoch')
-        plt.ylabel(name)
-        if metric == 'loss':
-            plt.ylim([0, plt.ylim()[1]])
-        else:
-            plt.ylim([0, 1])
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig(f'{"base_" if is_base else ""}base_accuracy.png')
+    plt.show()
+    plt.clf()
 
-        plt.legend()
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig(f'{"base_" if is_base else ""}base_loss.png')
+    plt.show()
+    plt.clf()
 
-        if is_base:
-            plt.savefig(f'{metric}_base.png')
-        else:
-            plt.savefig(f'{metric}.png')
+    # summarize history for loss
+    plt.plot(history.history['recall'])
+    plt.plot(history.history['val_recall'])
+    plt.title('model recall')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig(f'{"base_" if is_base else ""}base_recall.png')
+    plt.show()
+    plt.clf()
 
-    fpr_keras, tpr_keras, thresholds_keras = roc_curve(ground_truth, predicted_res)
-    auc_keras = auc(fpr_keras, tpr_keras)
-    plt.figure(1)
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.plot(fpr_keras, tpr_keras, label='Keras (area = {:.3f})'.format(auc_keras))
-    plt.xlabel('False positive rate')
-    plt.ylabel('True positive rate')
-    plt.title('ROC curve')
-    plt.legend(loc='best')
-    if is_base:
-        plt.savefig(f'roc_curve_base.png')
-    else:
-        plt.savefig(f'roc_curve.png')
+    # summarize history for loss
+    plt.plot(history.history['precision'])
+    plt.plot(history.history['val_precision'])
+    plt.title('model precision')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig(f'{"base_" if is_base else ""}base_precision.png')
+    plt.show()
+    plt.clf()
 
 
 def visualize_model_training(model_history, is_base=False):
@@ -80,10 +90,7 @@ def visualize_model_training(model_history, is_base=False):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    if is_base:
-        plt.savefig('accuracy_training_base.png')
-    else:
-        plt.savefig('accuracy_training.png')
+    plt.savefig(f'{"base_" if is_base else ""}accuracy_training.png')
     plt.show()
     # summarize history for loss
     plt.plot(model_history.history['loss'])
@@ -91,8 +98,5 @@ def visualize_model_training(model_history, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
-    if is_base:
-        plt.savefig('loss_training_base.png')
-    else:
-        plt.savefig('loss_training.png')
+    plt.savefig(f'{"base_" if is_base else ""}loss_training.png')
     plt.show()
