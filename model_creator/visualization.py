@@ -27,7 +27,7 @@ def show_batch(data_gen):
     image_batch, label_batch = next(data_gen)
     plt.figure(figsize=(10, 10))
     for n in range(32):
-        ax = plt.subplot(8, 4, n + 1)
+        plt.subplot(8, 4, n + 1)
         plt.imshow(image_batch[n])
         if label_batch[n]:
             plt.title('SCC')
@@ -36,7 +36,7 @@ def show_batch(data_gen):
         plt.axis('off')
 
 
-def plot_metrics(history, ground_truth, predicted_res, is_base=False):
+def plot_metrics(history, is_base=False):
     plt.clf()
     matplotlib.rcParams['figure.figsize'] = (12, 10)
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
@@ -46,7 +46,7 @@ def plot_metrics(history, ground_truth, predicted_res, is_base=False):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}base_accuracy.png')
+    plt.savefig(f'{"base_" if is_base else ""}accuracy.png')
     plt.show()
     plt.clf()
 
@@ -57,7 +57,7 @@ def plot_metrics(history, ground_truth, predicted_res, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}base_loss.png')
+    plt.savefig(f'{"base_" if is_base else ""}loss.png')
     plt.show()
     plt.clf()
 
@@ -79,7 +79,7 @@ def plot_metrics(history, ground_truth, predicted_res, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}base_precision.png')
+    plt.savefig(f'{"base_" if is_base else ""}precision.png')
     plt.show()
     plt.clf()
 
