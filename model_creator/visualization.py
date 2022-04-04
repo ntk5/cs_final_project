@@ -68,7 +68,7 @@ def plot_metrics(history, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}base_recall.png')
+    plt.savefig(f'{"base_" if is_base else ""}recall.png')
     plt.show()
     plt.clf()
 
