@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.python.keras.applications.resnet import ResNet50
 
-from config import IMG_WIDTH, IMG_HEIGHT, METRICS
+from config import IMG_WIDTH, IMG_HEIGHT, METRICS, DROPOUT_RATE, DENSE_UNITS, ACTIVATION_FUNCTION, EPOCH_COUNT
 
 
 def train_clean_model(base_data_gen, target_data_gen, validation_data):
@@ -15,14 +15,14 @@ def train_clean_model(base_data_gen, target_data_gen, validation_data):
     model = keras.Sequential()
     model.add(resnet50)
     model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dropout(0.5))
-    model.add(keras.layers.Dense(units=1, activation='sigmoid'))
+    model.add(keras.layers.Dropout(DROPOUT_RATE))
+    model.add(keras.layers.Dense(units=DENSE_UNITS, activation=ACTIVATION_FUNCTION))
     model.summary()
 
     model.compile(loss=tf.keras.losses.BinaryCrossentropy(), metrics=METRICS)
 
     steps_per_epoch = base_data_gen.n // base_data_gen.batch_size
-    model.fit(x=base_data_gen, steps_per_epoch=steps_per_epoch, epochs=30)
+    model.fit(x=base_data_gen, steps_per_epoch=steps_per_epoch, epochs=EPOCH_COUNT)
 
     model.trainable = True
 
@@ -39,7 +39,7 @@ def train_clean_model(base_data_gen, target_data_gen, validation_data):
     new_model.summary()
     steps_per_epoch = target_data_gen.n // target_data_gen.batch_size
     history = new_model.fit(x=target_data_gen, validation_data=validation_data, steps_per_epoch=steps_per_epoch,
-                            epochs=30)
+                            epochs=EPOCH_COUNT)
 
     save_model(new_model, 'new_model')
 
@@ -54,15 +54,15 @@ def train_base_model(train_data_gen, validation_data):
     model = keras.Sequential()
     model.add(resnet50)
     model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dropout(0.5))
-    model.add(keras.layers.Dense(units=1, activation='sigmoid'))
+    model.add(keras.layers.Dropout(DROPOUT_RATE))
+    model.add(keras.layers.Dense(units=DENSE_UNITS, activation=ACTIVATION_FUNCTION))
     model.summary()
 
     model.compile(loss=tf.keras.losses.BinaryCrossentropy(), metrics=METRICS)
 
     steps_per_epoch = train_data_gen.n // train_data_gen.batch_size
     model_history = model.fit(x=train_data_gen, validation_data=validation_data, steps_per_epoch=steps_per_epoch,
-                              epochs=30)
+                              epochs=EPOCH_COUNT)
 
     save_model(model, 'base_model')
 

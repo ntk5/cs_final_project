@@ -4,11 +4,14 @@ BATCH_SIZE = 32
 IMG_HEIGHT = 224
 IMG_WIDTH = 224
 
+DROPOUT_RATE = 0.5
+DENSE_UNITS = 1
+EPOCH_COUNT = 200
+ACTIVATION_FUNCTION = 'sigmoid'
+
 SHOULD_VERIFY_DEVICES = False
 
-DATA_DIR = ''
-LABELS_PATH = ''
-IS_LOCAL = True
+IS_LOCAL = False
 
 if IS_LOCAL:
     DATA_DIR = r'C:\Users\nadav\Documents\unevrsity\thesis\datasets\skin\ISIC_2019_Training_Input'
