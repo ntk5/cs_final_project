@@ -35,7 +35,7 @@ def augment_images(df):
             # Apply Image Flipping horizontally and vertically
             horizontally_flipped_image = Image.fromarray(np.fliplr(img))
             veritcally_flipped_image = Image.fromarray(np.flipud(img))
-            # Apply Image Rotation by 90 and 270 degrees around the image center.
+            # Apply Image Rotation by 45
             rotated_image = Image.fromarray(np.flipud(img))
             rotated_image = rotated_image.rotate(45)
 
@@ -58,8 +58,7 @@ def split_data(df):
     return source_df, target_df
 
 
-def create_train_test_datagen(df_to_train, image_generator):
-    source_df, target_df = split_data(df_to_train)
+def create_train_test_datagen(image_generator, source_df, scc_train, scc_validation, scc_test):
     # create image generators for MEL training
     train_data_gen = image_generator.flow_from_dataframe(
         dataframe=source_df,
@@ -71,7 +70,6 @@ def create_train_test_datagen(df_to_train, image_generator):
         class_mode='binary')
 
     # create data get for scc
-    scc_train, scc_test = np.split(target_df.sample(frac=1), [int(.8 * len(target_df))])
     scc_train_data_gen = image_generator.flow_from_dataframe(
         dataframe=scc_train,
         directory=DATA_DIR,
@@ -80,6 +78,16 @@ def create_train_test_datagen(df_to_train, image_generator):
         target_size=(IMG_HEIGHT, IMG_WIDTH),
         batch_size=32,
         class_mode='binary')
+
+    scc_validation_data_gen = image_generator.flow_from_dataframe(
+        dataframe=scc_validation,
+        directory=DATA_DIR,
+        x_col='image',
+        y_col='SCC',
+        target_size=(IMG_HEIGHT, IMG_WIDTH),
+        batch_size=32,
+        class_mode='binary')
+
     scc_test_data_gen = image_generator.flow_from_dataframe(
         dataframe=scc_test,
         directory=DATA_DIR,
@@ -88,7 +96,7 @@ def create_train_test_datagen(df_to_train, image_generator):
         target_size=(IMG_HEIGHT, IMG_WIDTH),
         batch_size=1,
         class_mode='binary')
-    return train_data_gen, scc_train_data_gen, scc_test_data_gen
+    return train_data_gen, scc_train_data_gen, scc_test_data_gen, scc_validation_data_gen
 
 
 def create_labels(df, files_added_names):
