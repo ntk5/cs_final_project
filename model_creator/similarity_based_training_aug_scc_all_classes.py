@@ -40,7 +40,7 @@ def main():
                                                    [int(.8 * len(target_df)), int(.9 * len(target_df))])
 
     files_added_names = augment_images(scc_train)
-    extended_scc_train_df = create_labels(df, files_added_names)
+    extended_scc_train_df = create_labels(scc_train, files_added_names)
 
     train_data_gen, scc_train_data_gen, scc_test_data_gen, scc_validation_data_gen = create_train_test_datagen(
         image_generator, source_df, extended_scc_train_df, scc_validation, scc_test)
