@@ -36,7 +36,8 @@ def show_batch(data_gen):
         plt.axis('off')
 
 
-def plot_metrics(history, is_base=False):
+def plot_metrics(history, model_name):
+    model_name += '_'
     plt.clf()
     matplotlib.rcParams['figure.figsize'] = (12, 10)
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
@@ -46,7 +47,7 @@ def plot_metrics(history, is_base=False):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}accuracy.png')
+    plt.savefig(f'{model_name}accuracy.png')
     plt.show()
     plt.clf()
 
@@ -57,7 +58,7 @@ def plot_metrics(history, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}loss.png')
+    plt.savefig(f'{model_name}loss.png')
     plt.show()
     plt.clf()
 
@@ -68,7 +69,7 @@ def plot_metrics(history, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}recall.png')
+    plt.savefig(f'{model_name}recall.png')
     plt.show()
     plt.clf()
 
@@ -79,7 +80,7 @@ def plot_metrics(history, is_base=False):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(f'{"base_" if is_base else ""}precision.png')
+    plt.savefig(f'{model_name}precision.png')
     plt.show()
     plt.clf()
 

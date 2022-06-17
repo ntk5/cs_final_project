@@ -8,6 +8,13 @@ from config import IMG_WIDTH, IMG_HEIGHT, METRICS, DROPOUT_RATE, DENSE_UNITS, AC
 
 
 def train_clean_model(base_data_gen, target_data_gen, validation_data):
+    """
+    Train a ResNet50 model from scratch, perform transfer learning to target_data_gen
+    :param base_data_gen: datagen containing base model data
+    :param target_data_gen: datagen containing SCC class
+    :param validation_data: validation data with SCC and *no* augmentation
+    :return: trained model and training history
+    """
     resnet50 = ResNet50(weights=None, include_top=False, input_shape=(IMG_WIDTH, IMG_HEIGHT, 3))
 
     resnet50.trainable = True
@@ -46,7 +53,11 @@ def train_clean_model(base_data_gen, target_data_gen, validation_data):
     return new_model, history
 
 
-def train_base_model(train_data_gen, validation_data):
+def train_pre_trained_model(train_data_gen, validation_data, saved_model_name='base_model_with_augmentation'):
+    """
+    This function conducts fine-tuning to a ResNet50 model pretrained on ImageNet
+    :return:
+    """
     resnet50 = ResNet50(weights='imagenet', include_top=False, input_shape=(IMG_WIDTH, IMG_HEIGHT, 3))
     # freeze all current layers
     resnet50.trainable = False
@@ -64,7 +75,7 @@ def train_base_model(train_data_gen, validation_data):
     model_history = model.fit(x=train_data_gen, validation_data=validation_data, steps_per_epoch=steps_per_epoch,
                               epochs=EPOCH_COUNT)
 
-    save_model(model, 'base_model')
+    save_model(model, saved_model_name)
 
     return model, model_history
 
