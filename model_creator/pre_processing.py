@@ -58,7 +58,7 @@ def split_data(df):
     return source_df, target_df
 
 
-def create_train_test_datagen(image_generator, source_df, scc_train, scc_validation, scc_test):
+def create_datagenerators(image_generator, source_df, scc_train, scc_validation, scc_test):
     # create image generators for MEL training
     train_data_gen = image_generator.flow_from_dataframe(
         dataframe=source_df,

@@ -11,7 +11,7 @@ ACTIVATION_FUNCTION = 'sigmoid'
 
 SHOULD_VERIFY_DEVICES = False
 
-IS_LOCAL = False
+IS_LOCAL = True
 
 if IS_LOCAL:
     DATA_DIR = r'C:\Users\nadav\Documents\unevrsity\thesis\datasets\skin\ISIC_2019_Training_Input'

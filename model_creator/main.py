@@ -8,7 +8,7 @@ import tensorflow as tf
 from config import SHOULD_VERIFY_DEVICES
 from model_creating import train_pre_trained_model, evaluate_model, train_clean_model
 from pre_processing import create_image_generator, create_dataframe, augment_images, \
-    create_train_test_datagen, create_labels, split_data
+    create_datagenerators, create_labels, split_data
 from visualization import plot_metrics
 
 
@@ -40,7 +40,7 @@ def main():
     # ====================================== stuff without aug ===========================
 
     print("Creating non augmentation datagen")
-    train_data_gen_no_aug, scc_train_data_gen_no_aug, scc_test_data_gen_no_aug, scc_validation_data_gen_no_aug = create_train_test_datagen(
+    train_data_gen_no_aug, scc_train_data_gen_no_aug, scc_test_data_gen_no_aug, scc_validation_data_gen_no_aug = create_datagenerators(
         image_generator, source_df, scc_train, scc_validation, scc_test)
 
     # train ImageNet
@@ -66,7 +66,7 @@ def main():
     extended_scc_train_df = create_labels(scc_train, files_added_names)
 
     print("Creating augmentation datagen")
-    train_data_gen, scc_train_data_gen, scc_test_data_gen, scc_validation_data_gen = create_train_test_datagen(
+    train_data_gen, scc_train_data_gen, scc_test_data_gen, scc_validation_data_gen = create_datagenerators(
         image_generator, source_df, extended_scc_train_df, scc_validation, scc_test)
 
     # train ImageNet augmented SCC
