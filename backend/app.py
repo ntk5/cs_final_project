@@ -61,7 +61,8 @@ def analyze_image():
 
     response = float(dict(json.loads(r.content))['predictions'][0][0]) * 100
     request_fields["prognosis"] = response
-    return str(response)
+    # show only 3 decimal numbers
+    return str(round(response, 3))
 
 
 @app.route('/upload', methods=['GET', 'POST'])
